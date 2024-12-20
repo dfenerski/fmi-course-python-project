@@ -2,7 +2,7 @@
 name = "fmi-course-python-project"
 version = "0.1.0"
 description = ""
-authors = ["Dimitar Fenerski <dfenerski@gmail.com>"]
+authors = ["Dimitar Fenerski <dfenersky@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
