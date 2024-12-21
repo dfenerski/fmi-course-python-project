@@ -67,10 +67,3 @@ req.prepare_url(f"{revolut_sandbox_url}/ui/index.html", {
 
 print("Confirm app access consent:")
 print(req.url)
-
-# https://sandbox-oba.revolut.com/ui/index.html
-# ?response_type=code%20id_token
-# &scope=accounts
-# &redirect_uri=<insert redirect URL>
-# &client_id=<insert client_id>
-# &request=<insert JWT from step 3.>
