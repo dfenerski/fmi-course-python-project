@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+  <script type="text/babel">
+    const handleLogout = () => {
+        document.querySelector('#default-logout-form').submit()
+    }
+    
+    const TopBar = () => (
+      <div style={ {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '1rem 2rem',
+        backgroundColor: '#0078D4',
+        color: 'white'
+      }}>
+        <div style={ { fontSize: '1.5rem', fontWeight: 'bold' }}>Welcome</div>
+        <div>
+          <fluent-button appearance="accent" style={ { marginRight: '0.5rem' }}>Profile</fluent-button>
+          <fluent-button appearance="accent" style={ { marginRight: '0.5rem' }}>Settings</fluent-button>
+          <fluent-button appearance="accent" onClick={handleLogout}>Logout</fluent-button>
+        </div>
+      </div>
+    );
+
+    const Card = ({ title, content }) => (
+      <fluent-card style={ {
+        padding: '1rem',
+        borderRadius: '8px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        backgroundColor: 'white'
+      }}>
+        <h3 style={ { marginTop: 0 }}>{title}</h3>
+        <p>{content}</p>
+      </fluent-card>
+    );
+
+    const Dashboard = () => {
+      const cards = [
+        { title: 'Analytics', content: 'View your recent analytics and performance metrics here.' },
+        { title: 'Reports', content: 'Generate and review your latest reports.' },
+        { title: 'User Activity', content: 'Monitor user engagement and activities.' },
+        { title: 'Notifications', content: 'See recent alerts and system notifications.' }
+      ];
+
+      return (
+        <div style={ { backgroundColor: '#f3f3f3', minHeight: '100vh' }}>
+          <TopBar />
+          <div style={ {
+            padding: '2rem',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '1.5rem'
+          }}>
+            {cards.map((card, index) => (
+              <Card key={index} title={card.title} content={card.content} />
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<Dashboard />, document.getElementById('react-root'));
+  </script>
+  <div id="react-root"></div>
+    <form
+        id="default-logout-form"
+        method="post"
+        action="/logout"
+        class="displayNone"
+    >
+        {% csrf_token %}
+    </form>
+{% endblock %}
+

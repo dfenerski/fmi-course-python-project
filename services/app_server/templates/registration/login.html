@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+ <script type="text/babel">
+    const Login = () => {
+      const [username, setUsername] = React.useState('');
+      const [password, setPassword] = React.useState('');
+      
+      const handleSubmit = (event) => {
+        event.preventDefault();
+
+        const defaultForm = document.querySelector('#default-login-form');
+
+        defaultForm.querySelectorAll('input')[1].value = username;
+        defaultForm.querySelectorAll('input')[2].value = password;
+    
+        defaultForm.submit()
+      };
+
+      return (
+        <div style={ {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #f5f7fa, #c3cfe2)'
+        }}>
+          <fluent-card style={ {
+            padding: '2rem',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+            backgroundColor: 'white',
+            minWidth: '320px'
+          }}>
+            <h2 style={ { textAlign: 'center', marginBottom: '1.5rem' }}>Login</h2>
+            <form onSubmit={handleSubmit}>
+              <div style={ { marginBottom: '1rem' }}>
+                <fluent-text-field
+                  placeholder="Username"
+                  value={username}
+                  onInput={e => setUsername(e.target.value)}
+                  style={ { width: '100%' }}
+                ></fluent-text-field>
+              </div>
+              <div style={ { marginBottom: '1rem' }}>
+                <fluent-text-field
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onInput={e => setPassword(e.target.value)}
+                  style={ { width: '100%' }}
+                ></fluent-text-field>
+              </div>
+              <div style={ { textAlign: 'center' }}>
+                <fluent-button type="submit" appearance="accent">
+                  Login
+                </fluent-button>
+              </div>
+            </form>
+          </fluent-card>
+        </div>
+      );
+    };
+
+    const container = document.getElementById('react-root');
+    const root = ReactDOM.createRoot(container)
+    root.render(<Login />);
+  </script>
+  <div id="react-root"></div>
+  <form id="default-login-form" method="post" class="displayNone">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+{% endblock %}
