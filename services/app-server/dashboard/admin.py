@@ -14,8 +14,8 @@ class SymbolAdmin(admin.ModelAdmin):
 class TrackerAdmin(admin.ModelAdmin):
     model = Tracker
     ordering = tuple(['user'])
-    search_fields = tuple(['user'])
-    list_display = tuple(['user'])
+    search_fields = tuple(['user', 'is_selected'])
+    list_display = tuple(['user', 'is_selected'])
     fields = ModelUtils.extract_model_fields(Tracker)
 
 

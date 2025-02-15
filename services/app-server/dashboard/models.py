@@ -27,6 +27,8 @@ class Tracker(Named, AccessMetadata):
     user = ForeignKey(User, on_delete=CASCADE)
     symbols = ManyToManyField(Symbol, through="TrackerSymbols")
 
+    is_selected = BooleanField()
+
     class Meta(Named.Meta, AccessMetadata.Meta):
         pass
 
