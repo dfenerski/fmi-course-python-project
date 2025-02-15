@@ -9,8 +9,7 @@ class Singleton(type):
             if identity in cls_instances:
                 return cls_instances[identity]
             else:
-                # The parent class of the class `inner_cls` (1st argument) by traversing the `__mro__` of `inner_cls` (2nd argument)
-                class_instance = super(inner_cls, inner_cls).__new__(inner_cls)
+                class_instance = object.__new__(inner_cls)
                 class_instance.iter = 0
 
                 class_instance.iter_registry = [{}]
