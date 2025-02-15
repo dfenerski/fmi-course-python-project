@@ -124,7 +124,20 @@ const Dashboard = () => {
         setSymbols(symbols.filter(symbol => symbol.id !== id));
     };
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
+        try {
+            await PopupManager.showSubmittable(
+                <div>
+                    <h3>Please confirm</h3>
+                    <p>Are you sure you want to proceed?</p>
+                </div>,
+            );
+        } catch {
+            return PopupManager.showError('Operation rejected');
+        }
+
+        PopupManager.showSuccess('Operation confirmed');
+
         const newSymbol = {
             id: Date.now(),
             symbol_name: 'New Stock',
