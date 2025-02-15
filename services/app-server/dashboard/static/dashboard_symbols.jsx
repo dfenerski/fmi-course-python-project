@@ -102,7 +102,12 @@ const SymbolList = ({ symbols, onDelete }) => {
                         <fluent-button
                             appearance='accent'
                             style={{ marginLeft: '0.5rem' }}
-                            onClick={() => onDelete(symbol.id)}>
+                            onClick={() =>
+                                onDelete({
+                                    symbol: symbol.symbol_symbol,
+                                    name: symbol.symbol_name,
+                                })
+                            }>
                             Delete
                         </fluent-button>
                     </div>
@@ -120,41 +125,76 @@ const Dashboard = () => {
         setSymbols(trackerSymbols);
     }, []);
 
-    const handleDelete = id => {
-        setSymbols(symbols.filter(symbol => symbol.id !== id));
+    const handleDelete = async ({ symbol, name }) => {
+        try {
+            await PopupManager.showSubmittable(
+                <div>
+                    <h3>Confirmation required</h3>
+                    <p>
+                        Do you really want to delete {name} from your tracker?
+                    </p>
+                    <small> (You can always re-add it) </small>
+                </div>,
+            );
+        } catch {
+            return;
+        }
+
+        try {
+            await NetworkManager.request('DELETE', {
+                symbol,
+            });
+
+            setSymbols(
+                symbols.filter(({ symbol_symbol }) => symbol_symbol !== symbol),
+            );
+
+            PopupManager.showSuccess(
+                'Stock removed from tracker successfully!',
+            );
+        } catch (error) {
+            console.error(error);
+            PopupManager.showError(
+                'Failed to remove stock from tracker. Please try again.',
+            );
+            return;
+        }
     };
 
+    let newStockSymbol = null;
     const handleAdd = async () => {
         try {
             await PopupManager.showSubmittable(
                 <div>
-                    <h3>Please confirm</h3>
-                    <p>Are you sure you want to proceed?</p>
+                    <h3>Enter stock symbol</h3>
+                    <fluent-text-field
+                        placeholder='AAPL, MSTF, etc.'
+                        value=''
+                        onInput={e => (newStockSymbol = e.target.value)}
+                        style={{ width: '100%' }}></fluent-text-field>
                 </div>,
             );
         } catch {
-            return PopupManager.showError('Operation rejected');
+            return;
         }
 
-        PopupManager.showSuccess('Operation confirmed');
+        try {
+            const response = await NetworkManager.request('POST', {
+                symbol: newStockSymbol,
+            });
+            const symbol = await response.json();
 
-        const newSymbol = {
-            id: Date.now(),
-            symbol_name: 'New Stock',
-            symbol_symbol: 'NEW',
-            symbol_industry: 'Industry',
-            symbol_sector: 'Sector',
-            symbol_businessSummary: 'This is a new stock added.',
-            symbol_ir_website: '',
-            created_at: new Date().toLocaleString(),
-            modified_at: new Date().toLocaleString(),
-            is_favorite: false,
-        };
-        setSymbols([...symbols, newSymbol]);
+            setSymbols([...symbols, symbol]);
 
-        NetworkManager.POST({
-            hi: 123,
-        });
+            PopupManager.showSuccess(
+                `${symbol.symbol_name} added successfully to tracker!`,
+            );
+        } catch {
+            PopupManager.showError(
+                'Failed to add stock. Bad symbol or try again?',
+            );
+            return;
+        }
     };
 
     return (
@@ -170,4 +210,5 @@ const Dashboard = () => {
     );
 };
 
+ReactDOM.render(<Dashboard />, document.getElementById('react-root'));
 ReactDOM.render(<Dashboard />, document.getElementById('react-root'));
