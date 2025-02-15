@@ -79,11 +79,13 @@ const SymbolList = ({ symbols, onDelete }) => {
                         </fluent-badge>
                     )}
                     <div style={{ marginTop: '1rem' }}>
-                        <fluent-button
-                            id={`summary-btn-${symbol.id}`}
-                            appearance='accent'>
-                            View Summary
-                        </fluent-button>
+                        {false && (
+                            <fluent-button
+                                id={`summary-btn-${symbol.id}`}
+                                appearance='accent'>
+                                View Summary
+                            </fluent-button>
+                        )}
                         {false && (
                             <fluent-popover
                                 anchor={`summary-btn-${symbol.id}`}
@@ -136,6 +138,10 @@ const Dashboard = () => {
             is_favorite: false,
         };
         setSymbols([...symbols, newSymbol]);
+
+        NetworkManager.POST({
+            hi: 123,
+        });
     };
 
     return (
