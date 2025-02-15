@@ -1,7 +1,9 @@
 # type: ignore
 
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from dashboard.services.dashboard_symbols_service import DashboardSymbolsService
 from .models import Tracker, TrackerSymbols
 from .services.dashboard_index_service import DashboardIndexService
 
@@ -20,4 +22,21 @@ def index(request):
     return render(request, 'dashboard.html', {
         "tracker_name": tracker.name,
         "tracker_symbol_count": TrackerSymbols.objects.filter(tracker=tracker).count()
+    })
+
+
+@login_required(login_url='/login')
+def symbols(request, tracker_id):
+    user = request.user
+    # dashboard_symbols_svc = DashboardSymbolsService()
+
+    # Validate ownership
+    if not Tracker.objects.filter(pk=tracker_id, user=user).exists():
+        return HttpResponseBadRequest("Invalid request")
+
+    tracker_symbols = TrackerSymbols.objects.filter(tracker=tracker_id).select_related()
+
+    return render(request, 'dashboard_symbols.html', {
+        "tracker_name": tracker_symbols[0].tracker.name,
+        "tracker_symbols": tracker_symbols
     })

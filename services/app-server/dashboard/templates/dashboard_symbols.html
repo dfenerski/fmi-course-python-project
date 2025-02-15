@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <script type="text/javascript">
+      window.__DJANGO_STATE__ = {
+          tracker_name: "{{tracker_name}}",
+          tracker_symbols: [
+                {% for symbol in tracker_symbols %} {
+                    id: {{ symbol.id }},
+                    symbol_name: "{{ symbol.symbol.name }}",
+                    symbol_symbol: "{{ symbol.symbol.symbol }}",
+                    symbol_industry: "{{ symbol.symbol.industry }}",
+                    symbol_sector: "{{ symbol.symbol.sector }}",
+                    symbol_businessSummary: "{{ symbol.symbol.businessSummary }}",
+                    symbol_ir_website: {% if symbol.symbol.irWebsite %} "{{ symbol.symbol.irWebsite }}" {% else %} null {% endif %},
+                    created_at: "{{ symbol.created_at }}",
+                    modified_at: "{{ symbol.modified_at }}",
+                    is_favorite: {% if symbol.is_favorite %} true {% else %} false {% endif %},
+                    metadata: {{ symbol.metadata }},
+                }, {% endfor %}
+          ]
+      }
+  </script>
+  <script type="text/babel" src="{% static 'dashboard_symbols.jsx' %}"> </script>
+  <div id="react-root"></div>
+    <form
+        id="default-logout-form"
+        method="post"
+        action="/logout"
+        class="displayNone"
+    >
+        {% csrf_token %}
+    </form>
+{% endblock %}
+
