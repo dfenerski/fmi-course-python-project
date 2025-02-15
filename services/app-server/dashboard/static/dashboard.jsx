@@ -9,6 +9,9 @@ const getProp = propName => {
 const TopBar = () => (
     <div
         style={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 1000, // ensure the bar is above other content
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -23,12 +26,7 @@ const TopBar = () => (
             <fluent-button
                 appearance='accent'
                 style={{ marginRight: '0.5rem' }}>
-                Stock catalogue
-            </fluent-button>
-            <fluent-button
-                appearance='accent'
-                style={{ marginRight: '0.5rem' }}>
-                Screener
+                Stock Screener
             </fluent-button>
             <fluent-button appearance='accent' onClick={handleLogout}>
                 Logout
