@@ -1,2 +1,0 @@
-
-BEAR_COEFFICIENT = 3

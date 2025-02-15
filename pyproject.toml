@@ -1,10 +1,18 @@
 [project]
-name = "monorepo-1"
+name = "fmi-course-python-project"
 version = "0.1.0"
-description = "Add your description here"
+description = "Project workspace root"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "click>=8.1.8",
     "django>=5.1.6",
+    "db-util"
 ]
+
+[tool.uv.sources]
+db-util = { workspace = true }
+
+[tool.uv.workspace]
+members = ["libs/db-util", "services/app-server", "services/cli"]
+
+

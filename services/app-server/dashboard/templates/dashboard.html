@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <script type="text/javascript">
+      window.__DJANGO_STATE__ = {
+          my_symbols: {{my_symbols}}
+      }
+  </script>
+  <script type="text/babel" src="{% static 'dashboard.jsx' %}"> </script>
+  <div id="react-root"></div>
+    <form
+        id="default-logout-form"
+        method="post"
+        action="/logout"
+        class="displayNone"
+    >
+        {% csrf_token %}
+    </form>
+{% endblock %}
+
