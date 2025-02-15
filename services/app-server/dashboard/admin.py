@@ -1,6 +1,7 @@
 from django.contrib import admin
 from db_util.classes.model_utils import ModelUtils
-from .models import Symbol, Tracker, TrackerSymbols
+from .models import Tracker, TrackerSymbols
+from db_models_shared.symbol import Symbol
 
 
 class SymbolAdmin(admin.ModelAdmin):
@@ -30,4 +31,3 @@ class TrackerSymbolsAdmin(admin.ModelAdmin):
 admin.site.register(Symbol, SymbolAdmin)
 admin.site.register(Tracker, TrackerAdmin)
 admin.site.register(TrackerSymbols, TrackerSymbolsAdmin)
-

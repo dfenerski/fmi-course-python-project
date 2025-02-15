@@ -1,12 +1,20 @@
+# type: ignore
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from .models import Tracker
+from .services.dashboard_index_service import DashboardIndexService
 
 
 @login_required(login_url='/login')
 def index(request):
-    print(request.user)
-    print(request.user.id)
-    return render(request, 'dashboard.html', {
-        "my_symbols": 4
-    })
 
+    user = request.user
+    dashboard_index_svc = DashboardIndexService()
+
+    if not dashboard_index_svc.user_has_trackers(user):
+        dashboard_index_svc.create_default_tracker(user)
+
+    return render(request, 'dashboard.html', {
+        "my_symbols": Tracker.objects.filter(user=request.user).count()
+    })
