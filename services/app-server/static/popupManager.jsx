@@ -79,14 +79,13 @@ class PopupManager {
             { label: 'Cancel', appearance: 'subtle', onClick: reject },
         ];
 
-        ReactDOM.render(
+        ReactDOM.createRoot(container).render(
             <ModalDialog
                 content={jsxContent}
                 buttons={buttons}
                 container={container}
                 role={DialogRole.INFO}
             />,
-            container,
         );
 
         return promise;
@@ -104,7 +103,7 @@ class PopupManager {
 
         const { promise, resolve } = Promise.withResolvers();
 
-        ReactDOM.render(
+        ReactDOM.createRoot(container).render(
             <ModalDialog
                 content={content}
                 buttons={[
@@ -113,7 +112,6 @@ class PopupManager {
                 container={container}
                 role={DialogRole.ERROR}
             />,
-            container,
         );
 
         return promise;
@@ -131,7 +129,7 @@ class PopupManager {
 
         const { promise, resolve } = Promise.withResolvers();
 
-        ReactDOM.render(
+        ReactDOM.createRoot(container).render(
             <ModalDialog
                 content={content}
                 buttons={[
@@ -140,7 +138,6 @@ class PopupManager {
                 container={container}
                 role={DialogRole.SUCCESS}
             />,
-            container,
         );
 
         return promise;

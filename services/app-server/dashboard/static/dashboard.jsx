@@ -203,4 +203,6 @@ const Dashboard = () => {
     );
 };
 
-ReactDOM.render(<Dashboard />, document.getElementById('react-root'));
+ReactDOM.createRoot(document.getElementById('react-root')).render(
+    <Dashboard />,
+);
