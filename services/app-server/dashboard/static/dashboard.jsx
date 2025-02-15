@@ -6,7 +6,7 @@ const getProp = propName => {
     return window.__DJANGO_STATE__[propName];
 };
 
-const TopBar = () => (
+const TopBar = ({ trackerName }) => (
     <div
         style={{
             position: 'sticky',
@@ -20,7 +20,7 @@ const TopBar = () => (
             color: 'white',
         }}>
         <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-            {getProp('tracker_name')}
+            {trackerName}
         </div>
         <div>
             <fluent-button
@@ -53,6 +53,42 @@ const Dashboard = () => {
     const [symbolCount, setSymbolCount] = React.useState(
         getProp('tracker_symbol_count'),
     );
+    const [trackerName, setTrackerName] = React.useState(
+        getProp('tracker_name'),
+    );
+
+    let newTrackerName = null;
+    const handleUpdate = async () => {
+        try {
+            await PopupManager.showSubmittable(
+                <div>
+                    <h3>Enter new tracker name</h3>
+                    <fluent-text-field
+                        placeholder='Nancy Pelosi Top Stocks'
+                        value=''
+                        onInput={e => (newTrackerName = e.target.value)}
+                        style={{ width: '100%' }}></fluent-text-field>
+                </div>,
+            );
+        } catch {
+            return;
+        }
+
+        try {
+            await NetworkManager.request('PATCH', {
+                name: newTrackerName,
+            });
+
+            setTrackerName(newTrackerName);
+
+            PopupManager.showSuccess(`Tracker successfully renamed.`);
+        } catch {
+            PopupManager.showError(
+                'Failed to rename tracker. Please try again.',
+            );
+            return;
+        }
+    };
 
     let newStockSymbol = null;
     const handleAdd = async () => {
@@ -120,7 +156,8 @@ const Dashboard = () => {
                 <>
                     <fluent-button
                         appearance='accent'
-                        style={{ marginTop: '0.5rem' }}>
+                        style={{ marginTop: '0.5rem' }}
+                        onClick={handleUpdate}>
                         Adjust tracker name
                     </fluent-button>
                     <br />
@@ -142,7 +179,7 @@ const Dashboard = () => {
 
     return (
         <div style={{ backgroundColor: '#f3f3f3', minHeight: '100vh' }}>
-            <TopBar />
+            <TopBar trackerName={trackerName} />
             <div
                 style={{
                     padding: '2rem',

@@ -3,29 +3,41 @@
 import json
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from django.views.generic.base import View
 from dashboard.services.dashboard_symbols_service import DashboardSymbolsService
 from .models import Tracker, TrackerSymbols
 from .services.dashboard_index_service import DashboardIndexService
 
 
-@login_required(login_url='/login')
-def index(request):
+class DashboardIndex(View):
+    def get(self, request):
+        user = request.user
+        dashboard_index_svc = DashboardIndexService()
 
-    user = request.user
-    dashboard_index_svc = DashboardIndexService()
+        if not dashboard_index_svc.user_has_trackers(user):
+            dashboard_index_svc.create_default_tracker(user)
 
-    if not dashboard_index_svc.user_has_trackers(user):
-        dashboard_index_svc.create_default_tracker(user)
+        tracker = Tracker.objects.get(user=user)
 
-    tracker = Tracker.objects.get(user=user)
+        return render(request, 'dashboard.html', {
+            "tracker_id": tracker.id,
+            "tracker_name": tracker.name,
+            "tracker_symbol_count": TrackerSymbols.objects.filter(tracker=tracker).count()
+        })
 
-    return render(request, 'dashboard.html', {
-        "tracker_id": tracker.id,
-        "tracker_name": tracker.name,
-        "tracker_symbol_count": TrackerSymbols.objects.filter(tracker=tracker).count()
-    })
+    def patch(self, request):
+        try:
+            payload = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError as e:
+            return HttpResponseBadRequest(f'Invalid JSON: {e}')
+
+        user = request.user
+        tracker = Tracker.objects.filter(is_selected=True, user=user)
+
+        new_tracker_name = payload.get('name')
+        tracker.update(name=new_tracker_name)
+
+        return JsonResponse({'updated': new_tracker_name})
 
 
 class DashboardSymbols(View):
