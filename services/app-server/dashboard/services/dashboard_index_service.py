@@ -1,34 +1,14 @@
 # type: ignore
 
-from common_util.singleton import Singleton
 from django.db import transaction
 from dashboard.models import Tracker
-from db_models_shared.symbol import Symbol
-from etl.etl_symbol import EtlSymbol
 from common_util.default_symbol import DefaultSymbol
+from dashboard.services.dashboard_base_service import DashboardBaseService
 
 
-class DashboardIndexService(metaclass=Singleton):
+class DashboardIndexService(DashboardBaseService):
     def user_has_trackers(self, user):
         return Tracker.objects.filter(user=user).exists()
-
-    def run_pipeline(self, symbol):
-        symbol_instance = Symbol.objects.create(
-            name="",
-            symbol=symbol,
-            industry="",
-            sector="",
-            businessSummary="",
-            irWebsite=""
-        )
-        return symbol_instance
-
-    def get_symbol_graceful(self, symbol):
-        if not Symbol.objects.filter(symbol=symbol).exists():
-            symbol_instance = EtlSymbol().run_pipeline(symbol)
-            return symbol_instance
-        else:
-            return Symbol.objects.get(symbol=symbol)
 
     @transaction.atomic
     def create_default_tracker(self, user):
