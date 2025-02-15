@@ -25,7 +25,8 @@ const TopBar = () => (
         <div>
             <fluent-button
                 appearance='accent'
-                style={{ marginRight: '0.5rem' }}>
+                style={{ marginRight: '0.5rem' }}
+                onClick={() => NavigationManager.toDashboard()}>
                 Dashboard
             </fluent-button>
             <fluent-button

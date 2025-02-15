@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+  <script type="text/javascript" src="{% static 'navigationManager.js' %}"> </script>
   <script type="text/javascript">
       window.__DJANGO_STATE__ = {
+          tracker_id: "{{tracker_id}}",
           tracker_name: "{{tracker_name}}",
           tracker_symbol_count: {{tracker_symbol_count}}
       }

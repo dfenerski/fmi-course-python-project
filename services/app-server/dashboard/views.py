@@ -22,6 +22,7 @@ def index(request):
     tracker = Tracker.objects.get(user=user)
 
     return render(request, 'dashboard.html', {
+        "tracker_id": tracker.id,
         "tracker_name": tracker.name,
         "tracker_symbol_count": TrackerSymbols.objects.filter(tracker=tracker).count()
     })

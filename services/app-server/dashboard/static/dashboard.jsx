@@ -58,7 +58,12 @@ const Dashboard = () => {
                 <>
                     <fluent-button
                         appearance='accent'
-                        style={{ marginTop: '0.5rem' }}>
+                        style={{ marginTop: '0.5rem' }}
+                        onClick={() =>
+                            NavigationManager.toDashboardSymbols(
+                                getProp('tracker_id'),
+                            )
+                        }>
                         Manage
                     </fluent-button>
                 </>
