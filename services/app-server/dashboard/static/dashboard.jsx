@@ -50,10 +50,54 @@ const Card = ({ title, content, isVisible }) => (
 );
 
 const Dashboard = () => {
+    const [symbolCount, setSymbolCount] = React.useState(
+        getProp('tracker_symbol_count'),
+    );
+
+    let newStockSymbol = null;
+    const handleAdd = async () => {
+        try {
+            await PopupManager.showSubmittable(
+                <div>
+                    <h3>Enter stock symbol</h3>
+                    <fluent-text-field
+                        placeholder='AAPL, MSTF, etc.'
+                        value=''
+                        onInput={e => (newStockSymbol = e.target.value)}
+                        style={{ width: '100%' }}></fluent-text-field>
+                </div>,
+            );
+        } catch {
+            return;
+        }
+
+        try {
+            const response = await NetworkManager.request(
+                'POST',
+                {
+                    symbol: newStockSymbol,
+                },
+                `${window.location.href}${getProp('tracker_id')}/symbols`,
+            );
+            const symbol = await response.json();
+
+            setSymbolCount(symbolCount + 1);
+
+            PopupManager.showSuccess(
+                `${symbol.symbol_name} added successfully to tracker!`,
+            );
+        } catch {
+            PopupManager.showError(
+                'Failed to add stock. Bad symbol or try again?',
+            );
+            return;
+        }
+    };
+
     const cards = [
         {
             isVisible: true,
-            title: `Currently tracking ${getProp('tracker_symbol_count')} stocks`,
+            title: `Currently tracking ${symbolCount} stocks`,
             content: (
                 <>
                     <fluent-button
@@ -82,7 +126,8 @@ const Dashboard = () => {
                     <br />
                     <fluent-button
                         appearance='accent'
-                        style={{ marginTop: '0.5rem' }}>
+                        style={{ marginTop: '0.5rem' }}
+                        onClick={handleAdd}>
                         Add another Stock
                     </fluent-button>
                 </>

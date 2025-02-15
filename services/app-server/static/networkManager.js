@@ -13,7 +13,12 @@ class NetworkManager {
         return this.#getCookie('csrftoken');
     }
 
-    static async request(method, payload, extraHeaders = {}) {
+    static async request(
+        method,
+        payload,
+        path = window.location.href,
+        extraHeaders = {},
+    ) {
         const csrfToken = this.#getCSRFToken();
 
         if (!csrfToken) {
@@ -26,7 +31,7 @@ class NetworkManager {
             ...extraHeaders,
         };
 
-        const response = await fetch(window.location.href, {
+        const response = await fetch(path, {
             method,
             headers,
             credentials: 'same-origin',
