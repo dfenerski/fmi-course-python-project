@@ -3,7 +3,8 @@
 {% block content %}
   <script type="text/javascript">
       window.__DJANGO_STATE__ = {
-          my_symbols: {{my_symbols}}
+          tracker_name: "{{tracker_name}}",
+          tracker_symbol_count: {{tracker_symbol_count}}
       }
   </script>
   <script type="text/babel" src="{% static 'dashboard.jsx' %}"> </script>

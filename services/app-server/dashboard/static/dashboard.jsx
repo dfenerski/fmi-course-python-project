@@ -16,17 +16,19 @@ const TopBar = () => (
             backgroundColor: '#0078D4',
             color: 'white',
         }}>
-        <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Welcome</div>
+        <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+            {getProp('tracker_name')}
+        </div>
         <div>
             <fluent-button
                 appearance='accent'
-                style={{ display: 'none', marginRight: '0.5rem' }}>
-                Profile
+                style={{ marginRight: '0.5rem' }}>
+                Stock catalogue
             </fluent-button>
             <fluent-button
                 appearance='accent'
-                style={{ display: 'none', marginRight: '0.5rem' }}>
-                Settings
+                style={{ marginRight: '0.5rem' }}>
+                Screener
             </fluent-button>
             <fluent-button appearance='accent' onClick={handleLogout}>
                 Logout
@@ -35,8 +37,9 @@ const TopBar = () => (
     </div>
 );
 
-const Card = ({ title, content }) => (
+const Card = ({ title, content, isVisible }) => (
     <fluent-card
+        {...(!isVisible ? { class: 'visibilityHidden' } : {})}
         style={{
             padding: '1rem',
             borderRadius: '8px',
@@ -51,21 +54,41 @@ const Card = ({ title, content }) => (
 const Dashboard = () => {
     const cards = [
         {
-            title: `Symbols: ${getProp('my_symbols')}`,
-            content: 'View your tracked symbols here.',
-        },
-        { title: 'Screener', content: 'Search and evaluate key market movers' },
-        {
-            title: 'Ask AI',
+            isVisible: true,
+            title: `Currently tracking ${getProp('tracker_symbol_count')} stocks`,
             content: (
-                <fluent-button
-                    appearance='accent'
-                    onClick={() => {
-                        alert(3);
-                    }}>
-                    Dig insights
-                </fluent-button>
+                <>
+                    <fluent-button
+                        appearance='accent'
+                        style={{ marginTop: '0.5rem' }}>
+                        Manage
+                    </fluent-button>
+                </>
             ),
+        },
+        {
+            isVisible: true,
+            title: 'Tracker Settings',
+            content: (
+                <>
+                    <fluent-button
+                        appearance='accent'
+                        style={{ marginTop: '0.5rem' }}>
+                        Adjust tracker name
+                    </fluent-button>
+                    <br />
+                    <fluent-button
+                        appearance='accent'
+                        style={{ marginTop: '0.5rem' }}>
+                        Add another Stock
+                    </fluent-button>
+                </>
+            ),
+        },
+        {
+            title: '',
+            content: '',
+            isVisible: false,
         },
     ];
 
@@ -84,6 +107,7 @@ const Dashboard = () => {
                         key={index}
                         title={card.title}
                         content={card.content}
+                        isVisible={card.isVisible}
                         onPress='alert(1)'
                         onClick='alert(2)'>
                         test123
