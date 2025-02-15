@@ -5,8 +5,15 @@ description = "Project application server"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "common-util",
+    "db-models-shared",
     "db-util",
+    "etl",
 ]
 
 [tool.uv.sources]
 db-util = { workspace = true }
+common-util = { workspace = true }
+etl = { workspace = true }
+db-models-shared = { workspace = true }
+

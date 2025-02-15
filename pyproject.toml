@@ -11,8 +11,18 @@ dependencies = [
 
 [tool.uv.sources]
 db-util = { workspace = true }
+db-models-shared = { workspace = true }
+common-util = { workspace = true }
+etl = { workspace = true }
 
 [tool.uv.workspace]
-members = ["libs/db-util", "services/app-server", "services/cli"]
+members = [
+    "libs/db-util",
+    "libs/db-models-shared",
+    "libs/common-util",
+    "libs/etl",
+    "services/app-server",
+    "services/cli"
+]
 
 
