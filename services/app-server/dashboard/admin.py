@@ -5,25 +5,25 @@ from .models import Symbol, Tracker, TrackerSymbols
 
 class SymbolAdmin(admin.ModelAdmin):
     model = Symbol
-    ordering = tuple(['name'])
-    search_fields = tuple(['symbol', 'name', 'industry', 'sector'])
-    list_display = tuple(['name', 'symbol', 'industry', 'sector', 'irWebsite'])
+    ordering = tuple(['name', 'created_at'])
+    search_fields = tuple(['symbol', 'name', 'created_at', 'industry', 'sector'])
+    list_display = tuple(['name', 'symbol', 'industry', 'sector', 'irWebsite', 'created_at'])
     fields = ModelUtils.extract_model_fields(Symbol)
 
 
 class TrackerAdmin(admin.ModelAdmin):
     model = Tracker
-    ordering = tuple([])
-    search_fields = tuple([])
-    list_display = tuple([])
+    ordering = tuple(['user'])
+    search_fields = tuple(['user'])
+    list_display = tuple(['user'])
     fields = ModelUtils.extract_model_fields(Tracker)
 
 
 class TrackerSymbolsAdmin(admin.ModelAdmin):
     model = TrackerSymbols
-    ordering = tuple([])
-    search_fields = tuple([])
-    list_display = tuple([])
+    ordering = tuple(['tracker', 'symbol'])
+    search_fields = tuple(['tracker', 'symbol'])
+    list_display = tuple(['tracker', 'symbol', 'is_favorite', 'metadata'])
     fields = ModelUtils.extract_model_fields(TrackerSymbols)
 
 
