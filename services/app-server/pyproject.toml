@@ -9,6 +9,7 @@ dependencies = [
     "db-models-shared",
     "db-util",
     "etl",
+    "visualizer",
 ]
 
 [tool.uv.sources]
@@ -16,4 +17,5 @@ db-util = { workspace = true }
 common-util = { workspace = true }
 etl = { workspace = true }
 db-models-shared = { workspace = true }
+visualizer = { workspace = true }
 

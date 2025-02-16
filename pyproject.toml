@@ -14,6 +14,7 @@ db-util = { workspace = true }
 db-models-shared = { workspace = true }
 common-util = { workspace = true }
 etl = { workspace = true }
+visualizer = { workspace = true }
 
 [tool.uv.workspace]
 members = [
@@ -21,6 +22,7 @@ members = [
     "libs/db-models-shared",
     "libs/common-util",
     "libs/etl",
+    "libs/visualizer",
     "services/app-server",
     "services/cli"
 ]
