@@ -10,7 +10,7 @@ class EtlSymbolHistory(metaclass=Singleton):
     def __init__(self):
         self.logger = Logger(self.__class__.__name__)
 
-    def run_pipeline(self, symbol):
+    def run_pipeline(self, symbol, period="3mo"):
         self.logger.log(f"Import starting for symbol: {symbol}")
 
         ticker = Ticker(symbol)
@@ -20,7 +20,7 @@ class EtlSymbolHistory(metaclass=Singleton):
         # https://stackoverflow.com/a/20049773/13163112
         last_entry = SymbolHistoryEntry.objects.filter(symbol=symbol_instance.id).order_by('-timestamp').first()
 
-        ticker_history = ticker.history(period="3mo") if not last_entry else ticker.history(start=last_entry.timestamp.strftime("%Y-%m-%d"))
+        ticker_history = ticker.history(period=period) if not last_entry else ticker.history(start=last_entry.timestamp.strftime("%Y-%m-%d"))
 
         # https://docs.djangoproject.com/en/5.1/ref/models/querysets/#bulk-create
         # https://stackoverflow.com/a/29816143/13163112
