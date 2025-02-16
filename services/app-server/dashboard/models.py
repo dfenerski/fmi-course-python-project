@@ -27,3 +27,7 @@ class TrackerSymbols(AccessMetadata):
 
     is_favorite = BooleanField()
     metadata = JSONField()
+
+    # https://stackoverflow.com/a/2881071/13163112
+    class Meta(AccessMetadata.Meta):
+        unique_together = ('symbol', 'tracker')
