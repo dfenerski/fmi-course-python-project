@@ -17,12 +17,20 @@ class DashboardIndex(View):
         if not dashboard_index_svc.user_has_trackers(user):
             dashboard_index_svc.create_default_tracker(user)
 
-        tracker = Tracker.objects.get(user=user)
+        tracker = Tracker.objects.get(is_selected=True, user=user)
+
+        # https://stackoverflow.com/a/37205928/13163112
+        tracker_symbols = TrackerSymbols.objects.filter(tracker=tracker).select_related().values_list('symbol__symbol', flat=True)
 
         return render(request, 'dashboard.html', {
             "tracker_id": tracker.id,
             "tracker_name": tracker.name,
-            "tracker_symbol_count": TrackerSymbols.objects.filter(tracker=tracker).count()
+            "tracker_symbol_count": TrackerSymbols.objects.filter(tracker=tracker).count(),
+            "kpi_market_cap_pie": dashboard_index_svc.generate_kpi_data("kpi_market_cap_pie", tracker_symbols),
+            "kpi_buy_recommendations": dashboard_index_svc.generate_kpi_data("kpi_buy_recommendations", tracker_symbols),
+            "kpi_employee_count": dashboard_index_svc.generate_kpi_data("kpi_employee_count", tracker_symbols),
+            "chart_price_historical": dashboard_index_svc.generate_chart_data("chart_price_historical", tracker_symbols),
+            "chart_price_historical_ma": dashboard_index_svc.generate_chart_data("chart_price_historical_ma", tracker_symbols),
         })
 
     def patch(self, request):

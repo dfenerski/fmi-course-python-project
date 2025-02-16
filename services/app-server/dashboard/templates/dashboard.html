@@ -8,7 +8,12 @@
       window.__DJANGO_STATE__ = {
           tracker_id: "{{tracker_id}}",
           tracker_name: "{{tracker_name}}",
-          tracker_symbol_count: {{tracker_symbol_count}}
+          tracker_symbol_count: {{tracker_symbol_count}},
+          kpi_market_cap_pie: "{{kpi_market_cap_pie}}",
+          kpi_buy_recommendations: "{{kpi_buy_recommendations}}",
+          kpi_employee_count: "{{kpi_employee_count}}",
+          chart_price_historical: "{{chart_price_historical}}",
+          chart_price_historical_ma: "{{chart_price_historical_ma}}"
       }
   </script>
   <script type="text/babel" src="{% static 'dashboard.jsx' %}"> </script>

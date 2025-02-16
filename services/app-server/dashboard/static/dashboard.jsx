@@ -193,11 +193,79 @@ const Dashboard = () => {
                         title={card.title}
                         content={card.content}
                         isVisible={card.isVisible}
-                        onPress='alert(1)'
-                        onClick='alert(2)'>
-                        test123
-                    </Card>
+                    />
                 ))}
+            </div>
+            <div
+                style={{
+                    padding: '2rem',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gap: '1.5rem',
+                }}>
+                <Card
+                    key={'kpi_market_cap_pie'}
+                    title='Market Capitalization Distribution'
+                    content={
+                        <img
+                            style={{ width: '30vw' }}
+                            src={`data:image/png;base64,${getProp('kpi_market_cap_pie')}`}
+                        />
+                    }
+                    isVisible={true}
+                />
+                <Card
+                    key={'kpi_employee_count'}
+                    title='Employee count'
+                    content={
+                        <img
+                            style={{ width: '30vw' }}
+                            src={`data:image/png;base64,${getProp('kpi_employee_count')}`}
+                        />
+                    }
+                    isVisible={true}
+                />
+                <Card
+                    key={'kpi_buy_recommendations'}
+                    title='Stock Recommendations'
+                    content={
+                        <img
+                            style={{ width: '30vw' }}
+                            src={`data:image/png;base64,${getProp('kpi_buy_recommendations')}`}
+                        />
+                    }
+                    isVisible={true}
+                />
+            </div>
+            <div
+                style={{
+                    padding: '2rem',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gap: '1.5rem',
+                }}>
+                <Card
+                    key={'chart_price_historical'}
+                    title='Stock Prices'
+                    content={
+                        <img
+                            style={{ width: '50vw' }}
+                            src={`data:image/png;base64,${getProp('chart_price_historical')}`}
+                        />
+                    }
+                    isVisible={true}
+                />
+                <Card
+                    key={'chart_price_historical_ma'}
+                    title='50day Moving Average'
+                    content={
+                        <img
+                            style={{ width: '50vw' }}
+                            src={`data:image/png;base64,${getProp('chart_price_historical_ma')}`}
+                        />
+                    }
+                    isVisible={true}
+                />
             </div>
         </div>
     );
