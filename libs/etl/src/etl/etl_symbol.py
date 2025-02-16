@@ -10,7 +10,6 @@ class EtlSymbol(metaclass=Singleton):
         self.logger = Logger(self.__class__.__name__)
 
     def run_pipeline(self, symbol):
-        print(symbol)
         self.logger.log(f"Import starting for symbol: {symbol}")
 
         ticker = Ticker(symbol)
@@ -27,3 +26,21 @@ class EtlSymbol(metaclass=Singleton):
         self.logger.log(f"Import finished for symbol: {symbol}")
 
         return symbol_instance
+
+    def run_enhancements(self, symbols, enhancements):
+        enhanced_data = []
+
+        for symbol in symbols:
+            print(symbol)
+            enhanced_entry = {
+                "symbol": symbol
+            }
+
+            ticker = Ticker(symbol)
+
+            for enhancement in enhancements:
+                enhanced_entry[enhancement] = ticker.info.get(enhancement)
+
+            enhanced_data.append(enhanced_entry)
+
+        return enhanced_data
